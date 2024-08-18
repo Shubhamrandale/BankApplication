@@ -1,7 +1,10 @@
 package com.BankApplication.DTO;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
 public class TransactionDto {
     private Integer TransactionId;
     private String modeOfTransaction;
