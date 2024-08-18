@@ -2,12 +2,14 @@ package com.BankApplication.Service.impl;
 
 import com.BankApplication.DTO.BankAccountDto;
 import com.BankApplication.Entities.BankAccountEntity;
+import com.BankApplication.Exception.DigitalBankingException;
 import com.BankApplication.Repository.BankAccountRepository;
 import com.BankApplication.Service.BankAccountService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BankAccountServiceImpl implements BankAccountService {
 
@@ -19,14 +21,25 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public String createAccount(BankAccountDto bankAccountDto) {
+        try{
         BankAccountEntity bankAccountEntity = mapToEntity(bankAccountDto);
         BankAccountEntity savedEntity = bankAccountRepository.save(bankAccountEntity);
         return "Account Created Successfully. The Account Number :- "+savedEntity.getAccountNo();
+        }
+        catch (Exception e){
+            throw new DigitalBankingException("NO ACCOUNTS FOUND");
+        }
     }
 
     @Override
     public List<BankAccountDto> listAccounts(Long mobileNo) {
-        return null;
+        List<BankAccountEntity> accounts = bankAccountRepository.findByMobileNo(mobileNo);
+        if(accounts.isEmpty()){
+            throw new DigitalBankingException("NO ACCOUNT IS FOUND WITH MOBILE NUMBER :"+mobileNo);
+        }
+        List<BankAccountDto> bankAccountDtos = accounts.stream().
+                map(account -> mapToDto(account)).collect(Collectors.toList());
+        return bankAccountDtos;
     }
 
     public BankAccountDto mapToDto(BankAccountEntity bankAccountEntity){
