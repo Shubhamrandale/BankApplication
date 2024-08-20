@@ -57,7 +57,9 @@ public class DigitalBankAccountServiceImpl implements DigitalBankAccountService
 
     @Override
     public Double checkBalance(Long mobileNo, Long accountNo) {
-        return null;
+        DigitalBankAccountEntity digitalBankAccount = digitalBankAccountRepository.findByMobileNoAndBankAccount_AccountNo(mobileNo, accountNo).
+                orElseThrow(() -> new DigitalBankingException("NO_ACCOUNT_IS_LINKED"));
+        return digitalBankAccount.getBankAccount().getBalance();
     }
 
     public DigitalBankAccountDto mapToDto(DigitalBankAccountEntity digitalBankAccountEntity){
