@@ -42,7 +42,17 @@ public class DigitalBankAccountServiceImpl implements DigitalBankAccountService
 
     @Override
     public String linkAccount(Long mobileNo, Long accountNo, Integer OTP) {
-        return null;
+        BankAccountEntity bankAccount = bankAccountRepository.findByMobileNoAndAccountNo(mobileNo, accountNo).
+                orElseThrow(() -> new DigitalBankingException("NO ACCOUNT FOUND"));
+        if(!OTP.equals(otpUtility.sendOTP())){
+            throw new DigitalBankingException("OTP DOES NOT MATCH");
+        }
+        DigitalBankAccountEntity digitalBankAccount = new DigitalBankAccountEntity();
+        digitalBankAccount.setMobileNo(mobileNo);
+        digitalBankAccount.setBankAccount(bankAccount);
+        digitalBankAccount.setAccountType(bankAccount.getBankType());
+        digitalBankAccountRepository.save(digitalBankAccount);
+        return "Account Linked Successfully with OTP verification . DigitalBanking Id :- "+digitalBankAccount.getDigitalBankingId();
     }
 
     @Override
