@@ -67,6 +67,10 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionDto> accountStatement(Long mobileNo) {
+        List<TransactionEntity> transactions = transactionRepository.findByPaidFromOrPaidTo(mobileNo, mobileNo);
+        if(transactions.isEmpty())
+            throw new DigitalBankingException("NO_ACTIVE_TRANSACTION");
+        
         return null;
     }
 
