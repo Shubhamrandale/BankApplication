@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -70,8 +71,9 @@ public class TransactionServiceImpl implements TransactionService {
         List<TransactionEntity> transactions = transactionRepository.findByPaidFromOrPaidTo(mobileNo, mobileNo);
         if(transactions.isEmpty())
             throw new DigitalBankingException("NO_ACTIVE_TRANSACTION");
-        
-        return null;
+        List<TransactionDto> transactionDtos =
+                transactions.stream().map(this::mapToDto).collect(Collectors.toList());
+        return transactionDtos;
     }
 
     public TransactionDto mapToDto(TransactionEntity transactionEntity){
