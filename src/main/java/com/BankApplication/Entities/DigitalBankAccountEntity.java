@@ -20,7 +20,7 @@ public class DigitalBankAccountEntity {
     @Column(name= "mobile_no")
     private Long mobileNo;
 
-    @Column(name= "account_no")
+    @Column(name= "account_no",insertable=false, updatable=false)
     private Long accountNo;
 
     @OneToOne
@@ -29,4 +29,9 @@ public class DigitalBankAccountEntity {
 
     @Column(name= "account_type")
     private String accountType;
+
+    @PrePersist
+    public void generateDigitalBankingId() {
+        this.digitalBankingId = "W_" +digitalBankingId;
+    }
 }

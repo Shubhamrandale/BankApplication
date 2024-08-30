@@ -38,6 +38,6 @@ public class BankAccountEntity {
     @Column (name="mobile_no")
     private Long mobileNo;
 
-    @OneToOne(mappedBy = "bank_account")
+    @OneToOne(mappedBy = "bankAccount")
     private DigitalBankAccountEntity digitalBankAccount;
 }
