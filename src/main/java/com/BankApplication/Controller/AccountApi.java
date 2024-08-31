@@ -1,5 +1,6 @@
 package com.BankApplication.Controller;
 
+import com.BankApplication.DTO.AccountRequest;
 import com.BankApplication.DTO.BankAccountDto;
 import com.BankApplication.Service.BankAccountService;
 import com.BankApplication.Service.DigitalBankAccountService;
@@ -34,6 +35,14 @@ public class AccountApi {
     public ResponseEntity<List<BankAccountDto>> listAccounts(@PathVariable (value = "mobileNo") Long mobileNo){
         List<BankAccountDto> bankAccountDtos = bankAccountService.listAccounts(mobileNo);
         return new ResponseEntity<>(bankAccountDtos, HttpStatus.OK);
+    }
+
+    @PostMapping("/linkAccount/{mobileNo}")
+    public ResponseEntity<String> linkAccount
+            (@PathVariable(value = "mobileNo") Long mobileNo , @RequestBody AccountRequest accountRequest){
+        Long accountNo = accountRequest.getAccountNo();
+        String linkedAccount = digitalBankAccountService.linkAccount(mobileNo, accountNo);
+        return new ResponseEntity<>(linkedAccount, HttpStatus.OK);
     }
 
 

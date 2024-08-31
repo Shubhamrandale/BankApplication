@@ -11,10 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name="digital_bank_account")
 public class DigitalBankAccountEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator ="digital_banking_id_sequence" )
-    @SequenceGenerator(name = "digital_banking_id_sequence", sequenceName = "digital_banking_id_sequence",initialValue = 1001)
-    @Column(name= "digital_banking_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "digital_banking_id_seq")
+    @SequenceGenerator(name = "digital_banking_id_seq", sequenceName = "digital_banking_id_seq", initialValue = 1001, allocationSize = 1)
+    @Column(name = "digital_banking_number")
+    private Long digitalBankingIdNumber;
+
+    @Column(name = "digital_banking_id", unique = true, nullable = false, updatable = false)
     private String digitalBankingId;
 
     @Column(name= "mobile_no")
@@ -30,8 +34,9 @@ public class DigitalBankAccountEntity {
     @Column(name= "account_type")
     private String accountType;
 
+
     @PrePersist
     public void generateDigitalBankingId() {
-        this.digitalBankingId = "W_" +digitalBankingId;
+        this.digitalBankingId = "W_" + String.format("%04d", this.digitalBankingIdNumber);
     }
 }
