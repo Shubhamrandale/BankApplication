@@ -54,6 +54,15 @@ public class AccountApi {
         return new ResponseEntity<>(linkedAccount, HttpStatus.OK);
     }
 
+    @GetMapping("/balance/{mobileNo}/")
+    public ResponseEntity<Double> checkBalance
+            (@PathVariable(value = "mobileNo" ) Long mobileNo, @RequestParam(name = "accountNo" ) Long accountNo){
+        Double balance = digitalBankAccountService.checkBalance(mobileNo, accountNo);
+        return new ResponseEntity<>(balance, HttpStatus.OK);
+    }
+
+
+
 
 
 
