@@ -3,6 +3,7 @@ package com.BankApplication.Controller;
 import com.BankApplication.DTO.AccountLinkRequest;
 import com.BankApplication.DTO.AccountRequest;
 import com.BankApplication.DTO.BankAccountDto;
+import com.BankApplication.DTO.TransactionDto;
 import com.BankApplication.Service.BankAccountService;
 import com.BankApplication.Service.DigitalBankAccountService;
 import com.BankApplication.Service.TransactionService;
@@ -61,11 +62,11 @@ public class AccountApi {
         return new ResponseEntity<>(balance, HttpStatus.OK);
     }
 
+    @PutMapping("/fundTransfer/")
+    public ResponseEntity<String> fundTransfer(@RequestBody TransactionDto transactionDto){
+        String fundTransfer = transactionService.fundTransfer(transactionDto);
+        return new ResponseEntity<>(fundTransfer, HttpStatus.OK);
+    }
 
-
-
-
-
-
-
+    
 }
