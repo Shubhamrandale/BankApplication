@@ -68,5 +68,9 @@ public class AccountApi {
         return new ResponseEntity<>(fundTransfer, HttpStatus.OK);
     }
 
-    
+    @GetMapping("/accountStatement/{mobileNo}")
+    public ResponseEntity<List<TransactionDto>> accountStatement(@PathVariable(value = "mobileNo") Long mobileNo){
+        List<TransactionDto> transactionDtos = transactionService.accountStatement(mobileNo);
+        return new ResponseEntity<>(transactionDtos,HttpStatus.OK);
+    }
 }

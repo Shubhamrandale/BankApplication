@@ -9,6 +9,7 @@ import com.BankApplication.Repository.BankAccountRepository;
 import com.BankApplication.Repository.DigitalBankAccountRepository;
 import com.BankApplication.Repository.TransactionRepository;
 import com.BankApplication.Service.TransactionService;
+import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
     @Autowired
     private ModelMapper modelMapper;
+    
+
     @Override
     @Transactional
     public String fundTransfer(TransactionDto transactionDto) {
@@ -76,8 +79,17 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionDtos;
     }
 
-    public TransactionDto mapToDto(TransactionEntity transactionEntity){
-        TransactionDto dto = modelMapper.map(transactionEntity, TransactionDto.class);
+    public TransactionDto mapToDto(TransactionEntity entity){
+        TransactionDto dto = new TransactionDto();
+        dto.setTransactionId(entity.getTransactionId());
+        dto.setModeOfTransaction(entity.getModeOfTransaction());
+        dto.setPaidTo(entity.getPaidTo());
+        dto.setReceiverAccountNo(entity.getReceiverBankAccount().getAccountNo());
+        dto.setAmount(entity.getAmount());
+        dto.setTransactionDateTime(entity.getTransactionDateTime());
+        dto.setRemarks(entity.getRemarks());
+        dto.setPaidFrom(entity.getPaidFrom());
+        dto.setSenderAccountNo(entity.getSenderBankAccount().getAccountNo());
         return dto;
     }
 }
